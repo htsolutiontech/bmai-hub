@@ -1,0 +1,166 @@
+{
+ "v": 2,
+ "iter": 210000,
+ "created": "2026-11-16T13:09:04.336Z",
+ "pub": {
+  "finance": {
+   "kty": "EC",
+   "crv": "P-256",
+   "x": "rFvyUBGVS4BMToOnDiC7iXgOmc9p6n6tPqHn5aeY6QU",
+   "y": "3xgUB5Lxz7O0rgz-rd3QXvOTMHin9Jieg2F5uZFgVJc"
+  },
+  "ai": {
+   "kty": "EC",
+   "crv": "P-256",
+   "x": "THUftuv-Gvay6dOBUvk7Tsd1Nn_UuQBibjLUYMs4Di4",
+   "y": "8pGtKVBHKUX3taoApH9-MvoGoX7bbi0RIOdejxptfXk"
+  },
+  "funds": {
+   "kty": "EC",
+   "crv": "P-256",
+   "x": "PmOGdPVYiLNNRaiTY775ebaYGXUFGPb5Wn9GdIx-LIA",
+   "y": "LRg5WIGppiDAORaWGAGlDLlUvnyPqicPuw2C91uXius"
+  },
+  "ip": {
+   "kty": "EC",
+   "crv": "P-256",
+   "x": "N7rzr3_iF3OmDHiPhWXNPW_xAE1scNBl-bgNvypJxMw",
+   "y": "fUIk7GL6FDhcQJDyWPzecArMPJwGxdDK9BW1XEYGeIk"
+  },
+  "smb": {
+   "kty": "EC",
+   "crv": "P-256",
+   "x": "a14wAe5y-3EH0iedx9pUip-68V_nzRdaGImIlfs7usM",
+   "y": "hkgFRRx28WJscX95Ddh0UFOsXZJFy8vhwCNEk5d6LgU"
+  },
+  "edu": {
+   "kty": "EC",
+   "crv": "P-256",
+   "x": "1PwEaya2fDdCw7lRr_r7rarppWTkW80lFxd9rwzqy6g",
+   "y": "tHeEJNxaDndK4cVhwqypMON_oL1BcI1Ex-tir7YxCDc"
+  },
+  "hotel": {
+   "kty": "EC",
+   "crv": "P-256",
+   "x": "9q5mbsXO2UpihyceWTCsKlaAQcxT2mEqiDejvpfXA2c",
+   "y": "yyazeOz3LEPXovosss2uTfrahCOr1dCxiwC0RLOjKus"
+  },
+  "agri": {
+   "kty": "EC",
+   "crv": "P-256",
+   "x": "NDuWU_WF7jx5iD8A2EuXJOpMQ8x8mvnaNPnYk2Hka14",
+   "y": "M_NGHXCWkDbtOndiUB6o-axlYdIyVtM4ZfthAzf7lWo"
+  }
+ },
+ "roles": {
+  "admin": {
+   "salt": "6PCAZ3Ape2tVBwdpxSJvUQ==",
+   "wraps": {
+    "finance": {
+     "iv": "q/ZunFh9Ei/mCaIT",
+     "ct": "8XcQDFabgF7X8/BK9A3u3xA7qMw8WusTqDAiiILQvdcSIl6lp/uLwKNnj26RrC6uwtSVySJx8tgvm+fqGk+L+0lpdIa7KJ1C/UIl0ueAJijg93bZQoN1Me3aUh+3e7fTUuKb4obTOPdccC846tfONx3eZJ8Qi8ywiM7Tj8Tyltt0c7OwTyguK+Jyk0AEVgPO4XNn6b0SGF4E6g=="
+    },
+    "ai": {
+     "iv": "AGiqY01VSeN3O78K",
+     "ct": "Sf3fqKjPpyK1aEK61KLF+D+/X/baEiNHSIxGqP37eXIcp4fUDt4d4E/GHI0F8JHmawq3qef+avWevPz32eVpVII3JaDpgo1XIdcUtsp3aO/yvQBBvSOHdyc9U/ADiVboN/HLpklk8Rm1JjIDDpYlxqd0zaxW9OrI65C5JbzX+cJhY19x6Pd1qg/zADtoHcJJrX5Aa7TYK/7QCw=="
+    },
+    "funds": {
+     "iv": "uvJHdwC3NRGrBRJh",
+     "ct": "eBgLZaRMJvr484o10v5toVX/RnEKjE54EyGWegYcL2xAEhfJmR9Hfn/UdDHlT/V/RBNQjb6pt2DN90dAQlFs8ptANl62Yr3latDif6BS8uyvqAIaXEfEjSIdE5QiS9OE1IyrjYjMDTYi3IS370GQ3282fGrggQa32xZjnv83COYLjsf0YqwP9RYbxYJ3RV56i6wqcDrXuKzd2w=="
+    },
+    "ip": {
+     "iv": "rAdBR9KTHKJ8dGYF",
+     "ct": "PSgLIRs/4om8aM4g2zJNqpgMboxgBfyS+EDvl0yPp1NwmlyZ2bPNplJ4qnGj8nDRx9NUwy5QPN8/htp3Qcga03Mizp2wliss6GpxrWUNspgH3shr/VgQ6gbvTxOUF9FkioTFVIG2golieY8/gJylUMdlv/4dLKT5xh8U37xkn8WzwBfRSYHOUthNLB35GnIGoMwZ4wTcqnSRxw=="
+    },
+    "smb": {
+     "iv": "scBps0f1gR/ITjRS",
+     "ct": "8T/xABrHqnkOKqwdj/cOF2WEGMPvHjyS9G/G+kLbHHUBEyrdmgcysK9jtWuArOCUl0803zdDzDw0d4nVjhI6omAO3M9EzCi1DK9XyxbK2Y3iD/sunvLkMbZepd2GLoSmDfGgv73GKHlA0nHNuHMpLcpYSXZYEsHCCW/IwnCVXeIZyY7Mr8eAYKcrRAvUqqjF4kEFnddSjmcNug=="
+    },
+    "edu": {
+     "iv": "UBfjX0NRErOEYwOa",
+     "ct": "zcOI0aYhMAfKLRHROzB4oNDQiA4gnICMjOwTnhWMXRnjJ75WYCtRZdYFwzom4ls4m7RIVyMHTIYp/Cz+6HugncRz5Y/Gjvk0kimC5Om4MzpFhN2VRXxBPzIRGx5F/OAWDzADs/gKVKcJCL40AXmApltjWbjQdLBdek8ZX7dScIwQjbV+sa/pjWu4BS3H7NHAkBIMgsZDSe+9Yg=="
+    },
+    "hotel": {
+     "iv": "hjZnZSRngBwDAtQn",
+     "ct": "45gMMofux85E7vllGyjG3z75b7//zbHBToOgMC6Jpm4+U0yrBn0ogkbZmFRXRo1zjad5sZTtPP8bohCEzzJ8kUJgfOGQjZph1lUy71u8GUYDS1MGYROJV8fBY9a4+rsWkRn7Sohr3nb7s5U8PDDbBQfIDYICPYrcZ+mlENyGpmrtwADhsxXQXl2cEkxzE7letDQccWiWiNBWuA=="
+    },
+    "agri": {
+     "iv": "82GbYmm6YE8wVy34",
+     "ct": "7NxOrAf1X39F+tArWtuRDE5TXdP0yyI82qNtcMVacZpVWiIwJuM19rUNwm3m4bfaDZBBHxaVkxrijQEGSwD7RcO4/SApuJpVaBexFleCBVoDbiZAMnPVrYdeylW3UyFb2u6NXPJRk4dQfIiNjAuBaaNwgqnAvMZS8mEaZkiLqUdWU267XUtULHzpiNDENO/4nY/eTI6OUFizaw=="
+    }
+   }
+  },
+  "user1": {
+   "salt": "Djgxe9PvIgRe7UXS11I1EQ==",
+   "wraps": {
+    "finance": {
+     "iv": "ENcwzu8EM/nw3aGG",
+     "ct": "AbckmyAuUjdCftRu7v5Pr8p9OURdgyItzrxNCeIMLe4WwhRukHuaxVvYqxbPTgEQ5l4qN5rv6YcQb5ZOTfZIXClLnVxKXlrOl94nzIhN99h4nVqLR8G6Jb7zd3uP4HBBZBQUaLHaWTK+yQJ49VwSFIEnB5u7poIQ6YCmAqRSfxjpb9BAkiASUGTji4a1eF/blbSm+r+CeqNwBA=="
+    }
+   }
+  },
+  "user2": {
+   "salt": "64sDZVrvuU24cY+DzVRFIw==",
+   "wraps": {
+    "ai": {
+     "iv": "63RtBzAzFRcAm2+j",
+     "ct": "7w9eHYtwSpIKjcd1D/4Uejs2AWoeZZeCSjmmsG7e5Wl34tllLP6aNhJrWVyetzX8Wvuqoy/UZiJ4MH+Ad3NGhEJ8/zMwP5VenxXJAQ+KXKo8b59JibbS8XsTx0ZiMwgDIoHH6Nq5E3ShGHW9S8dioS+rNCgmhb7SkIqwcxW7LGhGtIw4TFVY96FKAmDV8qPPtjP9+QI63EFHTw=="
+    }
+   }
+  },
+  "user3": {
+   "salt": "8z9HqjkHXsMaZy2Tmx66+w==",
+   "wraps": {
+    "funds": {
+     "iv": "2WIkCtKiLNJtkv+7",
+     "ct": "qSq2ujrUZ4SZ0Ek0Ok+OFSHSCK+Y9hFVyV2XRHZawCWOpNGDtcKS59BgMckqAlet0u8nr47XvfxhRT7+gPTQjHry50Mp/wgeJyT/BPhCLIqcT/TbbnTnuOoIOx4EN6SMtEMKOnOSxOpXggzSn0bTAfQapYk7jVKvWi+Z2QHioUh9PY6TekLujdS7FV/UPtZBVVyNkSOJoDmZeA=="
+    }
+   }
+  },
+  "user4": {
+   "salt": "BIprC0A4l8fWPQuYdCAMuA==",
+   "wraps": {
+    "ip": {
+     "iv": "pHB6Dls8EjE9NONs",
+     "ct": "GS4lHxzWyyyuEbn0SVQQD7AbdKsaXeTqZN7fyNfiNjmj+lv7Kua+6RMjTppzhQqaVSHG1o7H82CTlJZCjUpsST1YiW9unskAPGnavOF/dWXfrETtL/dQQzeefP/qZdgsDIDkMXE8lp9lxzWep+5LYedPniQDO0OBD5/chvfDwgOMv16b8JfO9/YN+VLR8pTxRpCytkp6tEj8Hw=="
+    }
+   }
+  },
+  "user5": {
+   "salt": "5F6md9iJyO3RAIr+bRF8dg==",
+   "wraps": {
+    "smb": {
+     "iv": "rEmiNpjMuRnQOy7S",
+     "ct": "Hj2VI52y31J8tvvKpdB6dt7LNuWJLNts89rMpnSYcWsGiOJMGc1jSTpkVdT9PTq8CFrAMY3wcM9EVRBrTLP9DDDjLnYd5NAhAbQ9PhJqOdS2GSLJY4IQmyE9ULwDUjdii/fvxBeM30vhqVURHe9Gqm4NlTKR1mrTcUebMS9ifQ8N+vWp2alrXlirg+1gkl8l1JPGW21QogKZDg=="
+    }
+   }
+  },
+  "user6": {
+   "salt": "/7kBLz4St8t/anjDeXjJhQ==",
+   "wraps": {
+    "edu": {
+     "iv": "kRMfhI9AQfEJZEFB",
+     "ct": "Vap3vH2uonO0XdaqQgg3XtdotuumkRfdj5+nusM7OZ+Lzf0KYp2HCvBHioYw7JRif/Y+Sb4JWkeLgL3P44w9btFBx05O6LpOQd+jC/6umMQyl59yoiX5hCZlkBs2N90HBra1eamJlhb8hsxkIQVSK9fAqvFR17RzlkSkIZeH1iaDefpKv+rl6hshHqCIXqHHyPhggmybCmDgmA=="
+    }
+   }
+  },
+  "user7": {
+   "salt": "o3RnSSBkWfVt3GGbSVlifg==",
+   "wraps": {
+    "hotel": {
+     "iv": "BHXVSEqJSTMf95XM",
+     "ct": "2yMhtQrBYeCSEfXdHsviFt0W1hJTT4FOhLObmc8CKA9ZC78DZkPjcZWlChdCIoYw3/yRi9xvErEGTg2U+QOi4KNL+HYSimWwoKmRYGF0hFH61RsIL4GjOAr74LdJiwkN7dSm4P/l87orbswDPZ3qCTQ5RjZaUhk5bmphN+hNICjtv0wt76TAHH6kxgXuK5HRSAUPmMZmfmOK6g=="
+    }
+   }
+  },
+  "user8": {
+   "salt": "sbpsHHUSeOm9LprQD1w+ww==",
+   "wraps": {
+    "agri": {
+     "iv": "MwQT+7rk1XQwtk48",
+     "ct": "H0GwHb4GSQ/v7RoiJ7YZrwPLysgJ1lvF8t0NUgaZtzYmOovKieEo+2GLEXJJb4UYMDGlzW5+5SjkgC4dkX9cDhCUAdOVdr5pgWPl7cUZCY5LS1yM0Mo1eRVNUjVJA8nm+rGTvI+yK05H0EHEikxg+Nvl4JVAJtx5H4/xISRsXeOjoy8QO7sZAmtWVj3d5g86FTt2BD9Y+IythQ=="
+    }
+   }
+  }
+ }
+}
