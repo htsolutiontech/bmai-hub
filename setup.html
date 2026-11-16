@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>BMAI Hub Setup</title>
+<style>
+:root{--bg:#F5F7FA;--card:#FFFFFF;--ink:#1F2933;--mut:#66788A;--line:#DDE5EC;--pri:#0B3C5D;--acc:#1D7874;--bad:#C2410C;--ok:#15803D;--chip:#EEF4F8}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0E151C;--card:#16202A;--ink:#E6EDF3;--mut:#93A4B4;--line:#26333F;--pri:#7CC4F2;--acc:#4FC1B5;--bad:#F87171;--ok:#4ADE80;--chip:#1D2A36}}
+:root[data-theme="dark"]{--bg:#0E151C;--card:#16202A;--ink:#E6EDF3;--mut:#93A4B4;--line:#26333F;--pri:#7CC4F2;--acc:#4FC1B5;--bad:#F87171;--ok:#4ADE80;--chip:#1D2A36}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans",sans-serif}
+main{max-width:720px;margin:0 auto;padding:24px 16px}h1{color:var(--pri);font-size:21px;margin:0 0 6px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin:14px 0}
+.row{display:grid;grid-template-columns:150px 1fr;gap:8px;align-items:center;margin:6px 0}
+input,button{font:inherit;color:var(--ink);background:var(--chip);border:1px solid var(--line);border-radius:8px;padding:8px 11px;width:100%}
+button{cursor:pointer;background:var(--pri);color:var(--card);border-color:var(--pri);font-weight:600}
+.mut{color:var(--mut);font-size:13px}.err{color:var(--bad)}.ok{color:var(--ok)}
+ol{padding-left:20px}code{background:var(--chip);padding:1px 5px;border-radius:5px}
+@media (max-width:520px){.row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main>
+<h1>BMAI Hub – tạo khóa (keys.json)</h1>
+<p class="mut">Chạy hoàn toàn trong trình duyệt. Mật khẩu không gửi đi đâu và không lưu lại. Mỗi vai trò chỉ mở được khóa của agent mình; Admin mở được cả 8.</p>
+<div class="card">
+<form id="f" autocomplete="off"><div id="rows"></div>
+<label class="mut"><input type="checkbox" id="show" style="width:auto"> Hiện mật khẩu</label>
+<div style="margin-top:12px"><button type="submit" id="go">Tạo và tải keys.json</button></div>
+<p id="msg" class="mut"></p></form>
+</div>
+<div class="card"><b>Sau khi tải về</b><ol class="mut">
+<li>Tải <code>keys.json</code> lên thư mục gốc của repo, ghi đè file cũ nếu có.</li>
+<li>Chạy lại đồng bộ (tác vụ "BMAI GitHub Sync"). Dữ liệu cũ mã hóa bằng khóa trước sẽ không mở được cho tới khi đồng bộ lại.</li>
+<li>Gửi mật khẩu cho từng người qua kênh riêng. Không lưu mật khẩu trong repo.</li></ol></div>
+<p class="mut">Thiết kế: Mr Thuong AgenticAI</p>
+</main>
+<script>
+(function(){
+const AG=["finance","ai","funds","ip","smb","edu","hotel","agri"],NM=["Tài chính","Y tế số & AI","Quỹ VC/PE/NGO","SHTT & Bản đồ CN","Tự động hóa SMB","Giáo dục","Khách sạn","Nông nghiệp CNC"];
+const ROLES=["admin",...AG.map((_,i)=>"user"+(i+1))],$=s=>document.querySelector(s),S=crypto.subtle,te=new TextEncoder(),EC={name:"ECDH",namedCurve:"P-256"};
+$("#rows").innerHTML=ROLES.map((r,i)=>`<div class="row"><label for="p-${r}">${i?`User ${i} – ${NM[i-1]}`:"Admin (cả 8)"}</label><input id="p-${r}" type="password" minlength="10" required></div>`).join("");
+$("#show").onchange=e=>document.querySelectorAll("#rows input").forEach(n=>n.type=e.target.checked?"text":"password");
+const b64=u=>btoa(String.fromCharCode(...new Uint8Array(u))),rnd=n=>crypto.getRandomValues(new Uint8Array(n));
+async function kek(pw,salt){return S.deriveKey({name:"PBKDF2",salt,iterations:210000,hash:"SHA-256"},await S.importKey("raw",te.encode(pw),"PBKDF2",false,["deriveKey"]),{name:"AES-GCM",length:256},false,["encrypt"])}
+async function enc(key,bytes){const iv=rnd(12);return {iv:b64(iv),ct:b64(await S.encrypt({name:"AES-GCM",iv},key,bytes))}}
+$("#f").onsubmit=async e=>{e.preventDefault();const m=$("#msg");m.className="mut";
+ const pw=Object.fromEntries(ROLES.map(r=>[r,$("#p-"+r).value]));
+ if(Object.values(pw).some(p=>p.length<10)){m.className="err";m.textContent="Mỗi mật khẩu cần ít nhất 10 ký tự.";return}
+ if(new Set(Object.values(pw)).size!==ROLES.length){m.className="err";m.textContent="9 mật khẩu phải khác nhau.";return}
+ if(!window.crypto||!S){m.className="err";m.textContent="Trình duyệt không hỗ trợ WebCrypto.";return}
+ $("#go").disabled=true;m.textContent="Đang tạo khóa…";
+ try{const pub={},priv={};
+  for(const k of AG){const kp=await S.generateKey(EC,true,["deriveBits"]);const j=await S.exportKey("jwk",kp.publicKey);pub[k]={kty:j.kty,crv:j.crv,x:j.x,y:j.y};priv[k]=await S.exportKey("pkcs8",kp.privateKey)}
+  const roles={};
+  for(const r of ROLES){const salt=rnd(16),K=await kek(pw[r],salt),wraps={};for(const k of (r==="admin"?AG:[AG[+r.slice(4)-1]]))wraps[k]=await enc(K,priv[k]);roles[r]={salt:b64(salt),wraps}}
+  const out={v:2,iter:210000,created:new Date().toISOString(),pub,roles};
+  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([JSON.stringify(out,null,1)],{type:"application/json"}));a.download="keys.json";document.body.appendChild(a);a.click();a.remove();
+  document.querySelectorAll("#rows input").forEach(n=>n.value="");m.className="ok";m.textContent="Đã tạo keys.json. Làm tiếp các bước bên dưới."}
+ catch(x){m.className="err";m.textContent="Lỗi: "+(x&&x.message||x)}
+ $("#go").disabled=false};
+})();
+</script>
+</body>
+</html>

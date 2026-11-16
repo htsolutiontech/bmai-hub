@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>BMAI Agent Hub</title>
+<style>
+:root{--bg:#F5F7FA;--card:#FFFFFF;--ink:#1F2933;--mut:#66788A;--line:#DDE5EC;--pri:#0B3C5D;--acc:#1D7874;--warn:#E07A1F;--bad:#C2410C;--ok:#15803D;--chip:#EEF4F8;--shadow:0 1px 2px rgba(15,30,45,.06),0 4px 14px rgba(15,30,45,.05)}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--bg:#0E151C;--card:#16202A;--ink:#E6EDF3;--mut:#93A4B4;--line:#26333F;--pri:#7CC4F2;--acc:#4FC1B5;--warn:#F2A35E;--bad:#F87171;--ok:#4ADE80;--chip:#1D2A36;--shadow:none}}
+:root[data-theme="dark"]{--bg:#0E151C;--card:#16202A;--ink:#E6EDF3;--mut:#93A4B4;--line:#26333F;--pri:#7CC4F2;--acc:#4FC1B5;--warn:#F2A35E;--bad:#F87171;--ok:#4ADE80;--chip:#1D2A36;--shadow:none}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans",sans-serif}
+header{position:sticky;top:0;z-index:5;background:var(--card);border-bottom:1px solid var(--line)}
+.bar{max-width:1180px;margin:0 auto;padding:10px 16px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.brand{font-weight:700;color:var(--pri);font-size:17px;margin-right:auto}
+.brand small{display:block;font-weight:400;color:var(--mut);font-size:12px}
+button,select,input{font:inherit;color:var(--ink);background:var(--chip);border:1px solid var(--line);border-radius:8px;padding:7px 11px}
+button{cursor:pointer}button.pri{background:var(--pri);color:var(--card);border-color:var(--pri)}
+nav{max-width:1180px;margin:0 auto;padding:0 16px 8px;display:flex;gap:6px;overflow-x:auto}
+nav a{white-space:nowrap;text-decoration:none;color:var(--mut);padding:6px 10px;border-radius:999px;font-size:14px;border:1px solid transparent}
+nav a.on{color:var(--pri);border-color:var(--line);background:var(--chip);font-weight:600}
+main{max-width:1180px;margin:0 auto;padding:16px}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;box-shadow:var(--shadow);min-width:0}
+.card h3{margin:0 0 6px;font-size:15px;color:var(--pri)}
+h2{font-size:20px;margin:6px 0 12px;color:var(--pri)}h4{margin:14px 0 6px;color:var(--acc)}
+.mut{color:var(--mut);font-size:13px}
+.kpis{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));margin:10px 0}
+.kpi{background:var(--chip);border-radius:10px;padding:10px 12px}.kpi b{display:block;font-size:20px;color:var(--acc)}.kpi span{font-size:12.5px}.kpi i{display:block;font-style:normal;color:var(--mut);font-size:11.5px}
+.tag{display:inline-block;font-size:12px;padding:1px 8px;border-radius:999px;background:var(--chip);color:var(--mut)}
+.tag.ok{color:var(--ok)}.tag.hi{color:var(--bad);font-weight:600}.tag.mid{color:var(--warn)}
+.tbl{width:100%;overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:13.5px}
+th,td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}th{color:var(--mut);font-weight:600}
+.brief{overflow-wrap:anywhere}.brief table{font-size:13px}a{color:var(--pri)}
+svg text{fill:var(--ink)}
+.note{background:var(--chip);border-left:3px solid var(--warn);padding:10px 12px;border-radius:8px;font-size:14px}
+details summary{cursor:pointer;color:var(--pri);font-weight:600;padding:6px 0}
+.login{max-width:420px;margin:40px auto}.login label{display:block;font-size:13px;color:var(--mut);margin:12px 0 4px}.login select,.login input{width:100%}
+.err{color:var(--bad);font-size:13.5px;min-height:20px;margin-top:8px}
+footer{max-width:1180px;margin:20px auto;padding:0 16px 24px;color:var(--mut);font-size:12.5px}
+@media (max-width:560px){body{font-size:14.5px}h2{font-size:18px}.brand{font-size:15.5px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="bar">
+    <div class="brand">BMAI Agent Hub<small id="who"></small></div>
+    <span id="roleBadge" class="tag" style="font-weight:600;display:none"></span>
+    <select id="asSel" aria-label="View as" style="display:none"></select>
+    <button id="langBtn" type="button">EN</button>
+    <button id="themeBtn" type="button">◐</button>
+    <button id="outBtn" type="button" style="display:none"></button>
+  </div>
+  <nav id="nav"></nav>
+</header>
+<main id="main"></main>
+<footer><span data-i="foot1"></span> · <span data-i="foot2"></span> · Thiết kế: Mr Thuong AgenticAI</footer>
+
+<script>
+(function(){
+let P={generated:"…"},KEYS=null;
+const AG=[{k:"finance",u:1,vi:"Tài chính VN & Quốc tế",en:"Finance – Vietnam & Global"},{k:"ai",u:2,vi:"Công nghệ ứng dụng & Y tế số",en:"Applied Tech & Digital Health"},{k:"funds",u:3,vi:"Quỹ VC, PE & NGO quốc tế",en:"VC, PE & International NGO Funds"},{k:"ip",u:4,vi:"Sở hữu trí tuệ & Bản đồ công nghệ",en:"IP & Technology Map"},{k:"smb",u:5,vi:"Tự động hóa DN & AI cho SMB",en:"Business Automation & AI for SMB"},{k:"edu",u:6,vi:"Giáo dục chuyên sâu & Kỹ năng mới",en:"Advanced Education & New Skills"},{k:"hotel",u:7,vi:"Căn hộ dịch vụ & Khách sạn",en:"Serviced Apartments & Hotels"},{k:"agri",u:8,vi:"Nông nghiệp công nghệ cao",en:"High-tech Agriculture"}];
+const T={vi:{login:"Đăng nhập",role:"Vai trò",pw:"Mật khẩu",enter:"Vào xem",bad:"Sai mật khẩu hoặc vai trò.",out:"Đăng xuất",overview:"Tổng quan",radar:"Radar",admin:"Quản trị (toàn quyền)",viewer:"Người xem",userN:"User",
+ latest:"Bản tin mới nhất",none:"Chưa có dữ liệu",highlights:"Điểm chính",sources:"Nguồn",archive:"Các bản trước",full:"Bản tin đầy đủ",updated:"Cập nhật",high:"Cao",mid:"Vừa",time:"Giờ",level:"Mức",topic:"Chủ đề",summary:"Tóm tắt",
+ matrix:"Ma trận phân quyền RBAC",fullp:"Toàn quyền: xem 8 agent + Radar, xem trước giao diện từng user",only:"Chỉ xem",viewAs:"Xem như",asAdmin:"Admin (tất cả)",preview:"Đang xem trước giao diện của",yourRole:"Vai trò",
+ hlChart:"Số điểm chính theo agent",radarChart:"Tin Radar theo agent",dataDate:"Dữ liệu ngày",secure:"Dữ liệu được mã hóa AES-256; mỗi vai trò chỉ giải mã được phần của mình.",devices:"All device",
+ foot1:"Thông tin từ BMAI Agent Hub",foot2:"Thông tin chỉ mang tính gợi ý tham khảo",stale:"chưa đồng bộ >36 giờ",nocrypto:"Trình duyệt không hỗ trợ giải mã (cần HTTPS hoặc mở file trực tiếp bằng Chrome/Edge/Firefox/Safari mới)."},
+ en:{login:"Sign in",role:"Role",pw:"Password",enter:"Open",bad:"Wrong password or role.",out:"Sign out",overview:"Overview",radar:"Radar",admin:"Admin (full access)",viewer:"Viewer",userN:"User",
+ latest:"Latest briefs",none:"No data yet",highlights:"Highlights",sources:"Sources",archive:"Earlier briefs",full:"Full brief (Vietnamese)",updated:"Updated",high:"High",mid:"Medium",time:"Time",level:"Level",topic:"Topic",summary:"Summary",
+ matrix:"RBAC permission matrix",fullp:"Full access: all 8 agents + Radar, preview each user's view",only:"View only",viewAs:"View as",asAdmin:"Admin (all)",preview:"Previewing the view of",yourRole:"Role",
+ hlChart:"Highlights per agent",radarChart:"Radar items per agent",dataDate:"Data date",secure:"Data is AES-256 encrypted; each role can decrypt only its own part.",devices:"Phone · tablet · desktop",
+ foot1:"Information from BMAI Agent Hub",foot2:"For reference only",stale:"not synced >36h",nocrypto:"This browser cannot decrypt (needs HTTPS, or open the file directly in a recent Chrome/Edge/Firefox/Safari)."}};
+const st=k=>{try{return localStorage.getItem(k)}catch(e){return null}},ss=(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}};
+let lang=st("bmai-lang")||"vi",theme=st("bmai-theme")||"auto";
+const t=k=>(T[lang]||T.vi)[k]||k,$=s=>document.querySelector(s);
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const agName=a=>lang==="en"?a.en:a.vi;
+function applyTheme(){const r=document.documentElement;theme==="auto"?r.removeAttribute("data-theme"):r.setAttribute("data-theme",theme);$("#themeBtn").textContent=theme==="auto"?"◐ Auto":theme==="dark"?"☾ Dark":"☀ Light"}
+$("#themeBtn").onclick=()=>{theme=theme==="auto"?"light":theme==="light"?"dark":"auto";ss("bmai-theme",theme);applyTheme()};
+$("#langBtn").onclick=()=>{lang=lang==="vi"?"en":"vi";ss("bmai-lang",lang);render()};
+applyTheme();
+
+/* ---- crypto v2: PBKDF2-SHA256 -> AES-GCM KEK -> unwrap ECDH P-256 private key per agent -> ECDH+HKDF -> AES-GCM ---- */
+const b64=s=>Uint8Array.from(atob(s),c=>c.charCodeAt(0));
+async function kek(pw,salt,iter){const base=await crypto.subtle.importKey("raw",new TextEncoder().encode(pw),"PBKDF2",false,["deriveKey"]);
+ return crypto.subtle.deriveKey({name:"PBKDF2",salt:b64(salt),iterations:iter,hash:"SHA-256"},base,{name:"AES-GCM",length:256},false,["decrypt"])}
+async function dec(key,box){return new Uint8Array(await crypto.subtle.decrypt({name:"AES-GCM",iv:b64(box.iv)},key,b64(box.ct)))}
+let role=null,DATA={},asRole="";
+const nc=()=>"?t="+Date.now();
+async function getJSON(u){const r=await fetch(u+nc(),{cache:"no-store"});if(!r.ok)throw new Error(u+" "+r.status);return r.json()}
+const EC={name:"ECDH",namedCurve:"P-256"};
+async function openBox(priv,k,f){const epk=await crypto.subtle.importKey("jwk",f.epk,EC,false,[]);
+ const bits=await crypto.subtle.deriveBits({name:"ECDH",public:epk},priv,256);const hk=await crypto.subtle.importKey("raw",bits,"HKDF",false,["deriveKey"]);
+ const dk=await crypto.subtle.deriveKey({name:"HKDF",hash:"SHA-256",salt:new Uint8Array(0),info:new TextEncoder().encode("bmai-v2|"+k)},hk,{name:"AES-GCM",length:256},false,["decrypt"]);
+ return JSON.parse(new TextDecoder().decode(await dec(dk,f)))}
+async function unlock(r,pw){
+ KEYS=KEYS||await getJSON("keys.json");const R=KEYS.roles[r];if(!R)throw 0;const K=await kek(pw,R.salt,KEYS.iter);const privs={},out={};
+ for(const [k,box] of Object.entries(R.wraps))privs[k]=await crypto.subtle.importKey("pkcs8",await dec(K,box),EC,false,["deriveBits"]);
+ await Promise.all(Object.keys(privs).map(async k=>{try{out[k]=await openBox(privs[k],k,await getJSON("data/"+k+".json"))}catch(e){out[k]={}}}));
+ return out}
+const stale=()=>!P.at||Date.now()-Date.parse(P.at)>36*3600e3;
+const genHTML=()=>esc(P.generated)+(P.generated!=="…"&&stale()?` <span class="tag hi">${t("stale")}</span>`:"");
+getJSON("data/status.json").then(s=>{P.generated=s.generated||"—";P.at=s.at}).catch(()=>{P.generated="—"}).then(()=>document.querySelectorAll(".gen").forEach(n=>n.innerHTML=genHTML()));
+
+/* ---- rendering ---- */
+function safeHTML(h){const d=new DOMParser().parseFromString("<div>"+(h||"")+"</div>","text/html");
+ d.querySelectorAll("script,style,iframe,object,embed,link,meta,form,img").forEach(n=>n.remove());
+ d.querySelectorAll("*").forEach(n=>[...n.attributes].forEach(a=>{const nm=a.name.toLowerCase();if(nm.startsWith("on")||nm==="style"||nm==="srcdoc")n.removeAttribute(a.name);
+  if(nm==="href"){const v=a.value.trim();if(!/^https?:/i.test(v)||/claude\.ai/i.test(v))n.replaceWith(...n.childNodes);else{n.setAttribute("target","_blank");n.setAttribute("rel","noopener")}}}));
+ return d.body.firstChild.innerHTML}
+function bars(items){items=items.filter(i=>isFinite(+i.value));if(!items.length)return `<p class="mut">${t("none")}</p>`;
+ const W=560,rh=26,lw=180,max=Math.max(1,...items.map(i=>+i.value)),H=items.length*rh+6,col=c=>c==="hi"?"var(--bad)":c==="mid"?"var(--warn)":"var(--acc)";
+ return `<svg viewBox="0 0 ${W} ${H}" width="100%" role="img">`+items.map((i,n)=>{const w=(W-lw-50)*(+i.value)/max,y=n*rh+4;
+  return `<text x="${lw-8}" y="${y+15}" text-anchor="end" font-size="12.5">${esc(String(i.label).slice(0,28))}</text><rect x="${lw}" y="${y+3}" width="${Math.max(w,1)}" height="16" rx="4" fill="${col(i.cls)}"/><text x="${lw+w+6}" y="${y+15}" font-size="12">${esc(i.value)}</text>`}).join("")+`</svg>`}
+function chart(c){if(!c||!c.labels||!c.values||c.values.length<3)return "";const title=(lang==="en"&&c.title_en)||c.title;let svg;
+ if(c.type==="line"){const W=560,H=180,p=30,V=c.values.map(Number),mn=Math.min(...V),r=(Math.max(...V)-mn)||1,pts=V.map((v,i)=>[p+i*(W-2*p)/Math.max(1,V.length-1),H-p-(v-mn)/r*(H-2*p)]);
+  svg=`<svg viewBox="0 0 ${W} ${H}" width="100%"><polyline fill="none" stroke="var(--pri)" stroke-width="2.4" points="${pts.map(q=>q.join(",")).join(" ")}"/>`+pts.map((q,i)=>`<circle cx="${q[0]}" cy="${q[1]}" r="3.5" fill="var(--pri)"/><text x="${q[0]}" y="${q[1]-8}" font-size="11" text-anchor="middle">${esc(V[i])}</text><text x="${q[0]}" y="${H-8}" font-size="10.5" text-anchor="middle">${esc(String(c.labels[i]).slice(0,10))}</text>`).join("")+`</svg>`}
+ else svg=bars(c.labels.map((l,i)=>({label:l,value:c.values[i]})));
+ return `<div class="card"><h3>${esc(title)}${c.unit?` (${esc(c.unit)})`:""}</h3>${svg}<div class="mut">${t("sources")}: ${esc(c.source||"")}</div></div>`}
+const kpiB=k=>k&&k.length?`<div class="kpis">`+k.map(x=>`<div class="kpi"><b>${esc(x.value)}</b><span>${esc((lang==="en"&&x.label_en)||x.label)}</span>${x.note?`<i>${esc(x.note)}</i>`:""}</div>`).join("")+`</div>`:"";
+function briefHTML(b,open){if(!b)return `<p class="mut">${t("none")}</p>`;
+ const hl=(lang==="en"&&b.highlights_en&&b.highlights_en.length?b.highlights_en:b.highlights)||[],ch=(b.charts||[]).map(chart).join("");
+ const secs=(b.sections||[]).map(s=>`<h4>${esc(s.title)}</h4><div>${safeHTML(s.html)}</div>`).join("");
+ const src=(b.sources||[]).filter(s=>/^https?:/i.test(s.url||"")&&!/claude\.ai/i.test(s.url)).map(s=>`<li><a href="${esc(s.url)}" target="_blank" rel="noopener">${esc(s.title)}</a> <span class="tag">${esc(s.label||"")}</span></li>`).join("");
+ return `<div class="brief"><div class="mut">${t("updated")}: ${esc(b.date||"")}</div>${kpiB(b.kpis)}${ch?`<div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(300px,1fr))">${ch}</div>`:""}<h4>${t("highlights")}</h4><ul>${hl.map(h=>`<li>${esc(h)}</li>`).join("")}</ul>${secs?`<details ${open?"open":""}><summary>${t("full")}</summary>${secs}</details>`:""}${src?`<details><summary>${t("sources")}</summary><ol>${src}</ol></details>`:""}</div>`}
+function radarRows(items){return items.length?`<div class="tbl"><table><tr><th>${t("time")}</th><th>${t("level")}</th><th>${t("topic")}</th><th>${t("summary")}</th><th>${t("sources")}</th></tr>`+items.map(i=>{const a=AG.find(x=>x.k===i.topic);
+ return `<tr><td>${esc(i.date||"")} ${esc(i.time||"")}</td><td><span class="tag ${i.level==="Cao"?"hi":"mid"}">${i.level==="Cao"?t("high"):t("mid")}</span></td><td>${esc(a?agName(a):i.topic)}</td><td>${esc(i.summary)}</td><td>${/^https?:/i.test(i.url||"")&&!/claude\.ai/i.test(i.url)?`<a href="${esc(i.url)}" target="_blank" rel="noopener">link</a>`:""} <span class="tag">${esc(i.label||"")}</span></td></tr>`}).join("")+`</table></div>`:`<p class="mut">${t("none")}</p>`}
+function matrixHTML(){const row=(n,d,f)=>`<tr><td><b>${n}</b><div class="mut">${d}</div></td>${AG.map(a=>`<td style="text-align:center">${f(a)?'<span class="tag ok">✓</span>':'<span class="mut">–</span>'}</td>`).join("")}</tr>`;
+ return `<div class="card" style="margin-top:14px"><h3>${t("matrix")}</h3><div class="tbl"><table><tr><th>${t("role")}</th>${AG.map(a=>`<th style="text-align:center" title="${esc(agName(a))}">A${a.u}</th>`).join("")}</tr>`+row("Admin",esc(t("fullp")),()=>true)+AG.map(a=>row(`${t("userN")} ${a.u}`,`${t("only")}: ${esc(agName(a))} + Radar`,b=>b.k===a.k)).join("")+`</table></div><p class="mut" style="margin:8px 0 0">${t("secure")} · ${t("devices")} · EN/VI · ☀/☾</p></div>`}
+const list=k=>((DATA[k]||{}).briefs||[]).slice().sort((x,y)=>(y.date||"").localeCompare(x.date||""));
+const radarOf=k=>((DATA[k]||{}).radar||[]).slice().sort((x,y)=>((y.date||"")+(y.time||"")).localeCompare((x.date||"")+(x.time||"")));
+function agentView(k,banner){const a=AG.find(x=>x.k===k),L=list(k),rd=radarOf(k);
+ return `${banner||""}<h2>${a.u}. ${esc(agName(a))} <span class="tag">${t("userN")} ${a.u}</span></h2><div class="card">${briefHTML(L[0],true)}</div>${rd.length?`<h2 style="margin-top:16px">${t("radar")}</h2><div class="card">${radarRows(rd)}</div>`:""}${L.length>1?`<h2 style="margin-top:16px">${t("archive")}</h2>`+L.slice(1).map(b=>`<div class="card" style="margin-bottom:10px"><details><summary>${esc(b.date)}</summary>${briefHTML(b,false)}</details></div>`).join(""):""}`}
+function overview(){const hl=bars(AG.map(a=>({label:`${a.u}. ${agName(a)}`,value:(list(a.k)[0]||{highlights:[]}).highlights.length})));
+ const rb=bars(AG.flatMap(a=>{const r=radarOf(a.k);return [{label:`${a.u}. ${agName(a)} – ${t("high")}`,value:r.filter(i=>i.level==="Cao").length,cls:"hi"},{label:`${a.u}. ${agName(a)} – ${t("mid")}`,value:r.filter(i=>i.level!=="Cao").length,cls:"mid"}]}).filter(x=>x.value>0));
+ const cards=AG.map(a=>{const b=list(a.k)[0],h=b?((lang==="en"&&b.highlights_en&&b.highlights_en.length?b.highlights_en:b.highlights)||[]).slice(0,3):[];
+  return `<div class="card"><h3><a href="#agent-${a.k}" style="color:inherit;text-decoration:none">${a.u}. ${esc(agName(a))}</a></h3><div class="mut">${b?esc(b.date):t("none")}</div>${b?kpiB((b.kpis||[]).slice(0,2)):""}<ul style="margin:6px 0 0;padding-left:18px">${h.map(x=>`<li>${esc(x)}</li>`).join("")}</ul></div>`}).join("");
+ return `<h2>${t("overview")}</h2><p class="mut">${t("dataDate")}: <span class="gen">${genHTML()}</span></p><div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(320px,1fr))"><div class="card"><h3>${t("hlChart")}</h3>${hl}</div><div class="card"><h3>${t("radarChart")}</h3>${rb}</div></div><h2 style="margin-top:18px">${t("latest")}</h2><div class="grid">${cards}</div>${matrixHTML()}`}
+function radarAll(){return `<h2>${t("radar")}</h2><div class="card">${radarRows(AG.flatMap(a=>radarOf(a.k)).sort((x,y)=>((y.date||"")+(y.time||"")).localeCompare((x.date||"")+(x.time||""))))}</div>`}
+function loginView(){const opts=`<option value="admin">Admin</option>`+AG.map(a=>`<option value="user${a.u}">${t("userN")} ${a.u} – ${esc(agName(a))}</option>`).join("");
+ return `<div class="card login"><h2>${t("login")}</h2><form id="lf"><label>${t("role")}</label><select id="lr">${opts}</select><label>${t("pw")}</label><input id="lp" type="password" autocomplete="current-password" required><div class="row" style="margin-top:14px"><button class="pri" type="submit" style="width:100%">${t("enter")}</button></div><div class="err" id="le"></div></form><p class="mut">${t("secure")}</p><p class="mut">${t("dataDate")}: <span class="gen">${genHTML()}</span></p></div>${matrixHTML()}`}
+const isAdmin=()=>role==="admin",myAgent=()=>role&&role!=="admin"?AG[+role.slice(4)-1].k:null;
+function links(){return isAdmin()?[["overview",t("overview")],["radar",t("radar")],...AG.map(a=>["agent-"+a.k,`${a.u}. ${agName(a)}`])]:role?[["mine",agName(AG.find(a=>a.k===myAgent()))]]:[]}
+function route(){const h=location.hash.slice(1),L=links().map(x=>x[0]);return L.includes(h)?h:(L[0]||"")}
+function render(){
+ document.documentElement.lang=lang;$("#langBtn").textContent=lang==="vi"?"EN":"VI";document.querySelectorAll("[data-i]").forEach(n=>n.textContent=t(n.dataset.i));
+ const rl=isAdmin()?"Admin":role?`${t("userN")} ${role.slice(4)}`:"";$("#roleBadge").style.display=rl?"":"none";$("#roleBadge").textContent=rl?`${t("yourRole")}: ${rl}`:"";
+ $("#who").textContent=isAdmin()?t("admin"):role?t("viewer"):t("devices");$("#outBtn").style.display=role?"":"none";$("#outBtn").textContent=t("out");
+ const sel=$("#asSel");sel.style.display=isAdmin()?"":"none";if(isAdmin()){sel.innerHTML=`<option value="">${t("viewAs")}: ${t("asAdmin")}</option>`+AG.map(a=>`<option value="${a.k}">${t("viewAs")}: ${t("userN")} ${a.u}</option>`).join("");sel.value=asRole}
+ const r=route(),m=$("#main");$("#nav").innerHTML=asRole?"":links().map(([id,l])=>`<a href="#${id}" class="${id===r?"on":""}">${esc(l)}</a>`).join("");
+ if(!role){m.innerHTML=window.crypto&&crypto.subtle?loginView():`<div class="note">${t("nocrypto")}</div>`+matrixHTML();const f=$("#lf");if(f)f.onsubmit=onLogin;return}
+ if(isAdmin()&&asRole){m.innerHTML=agentView(asRole,`<div class="note" style="margin-bottom:12px">${t("preview")} <b>${t("userN")} ${AG.find(a=>a.k===asRole).u}</b></div>`);return}
+ if(isAdmin()){if(r==="overview")m.innerHTML=overview();else if(r==="radar")m.innerHTML=radarAll();else m.innerHTML=agentView(r.slice(6));return}
+ m.innerHTML=agentView(myAgent())}
+async function onLogin(e){e.preventDefault();const r=$("#lr").value,pw=$("#lp").value;$("#le").textContent="…";
+ try{DATA=await unlock(r,pw);role=r;asRole="";$("#lp").value="";location.hash="";render()}catch(x){$("#le").textContent=t("bad")}}
+$("#outBtn").onclick=()=>{role=null;DATA={};asRole="";render()};
+$("#asSel").onchange=e=>{asRole=e.target.value;render()};
+window.addEventListener("hashchange",render);
+render();
+})();
+</script>
+</body>
+</html>
