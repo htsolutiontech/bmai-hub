@@ -14,10 +14,10 @@ BƯỚC 2 – MÃ HÓA VÀ ĐẨY LÊN
 - Gắn repo trước: tìm tool add_repo (ToolSearch "add_repo"), gọi owner "htsolutiontech", repo "bmai-hub", access "push". Nếu bị từ chối, hoặc kết quả có "push_check":"refused" / "pushes from this session will be refused": PushNotification "BMAI GitHub Sync thất bại: thiếu quyền push htsolutiontech/bmai-hub – cần cài Claude GitHub App cho repo (github.com/apps/claude)" rồi DỪNG. Có quyền thì clone đúng lệnh add_repo đưa ra (timeout ~10 phút) vào /tmp/bmai-hub.
 - Nếu không có add_repo: `git clone https://github.com/htsolutiontech/bmai-hub.git /tmp/bmai-hub`
 - `cd /tmp/bmai-hub && node tools/encrypt.mjs --in /tmp/bmai-plain`
-- `node tools/bmai_guard.mjs safety` phải in OK, nếu không thì DỪNG, không commit.
+- Nếu repo có tools/bmai_guard.mjs: `node tools/bmai_guard.mjs safety` phải in OK, nếu không thì DỪNG, không commit.
 - `git status --porcelain`: chỉ được thay đổi trong data/*.json.
   - Nếu có file khác thay đổi thì dừng lại và báo lỗi.
-- Commit với nội dung "Sync <dd/mm/yyyy HH:MM giờ VN>", rồi `git push origin main`.
+- Commit với nội dung "Sync <dd/mm/yyyy HH:MM giờ VN>".
 - Push bằng `git -c push.negotiate=true push origin HEAD:main`; bị từ chối vì nhánh đã đổi thì `git pull --rebase origin main` rồi thử lại một lần. Lỗi 403/permission denied: PushNotification nội dung thiếu quyền như trên.
 
 BƯỚC 3 – KIỂM TRA
