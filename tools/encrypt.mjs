@@ -61,5 +61,9 @@ for (const k of AGENTS) {
   writeFileSync(join(OUT, k + ".json"), JSON.stringify(await seal(K.pub[k], k, { briefs, radar })));
   stats[k] = { briefs: briefs.length, latest: briefs[0]?.date || "-", radar: radar.length };
 }
-writeFileSync(join(OUT, "status.json"), JSON.stringify({ v: 2, generated: now.label, at: new Date().toISOString(), agents: AGENTS.length }, null, 1));
+// status.json công khai: CHỈ thời điểm, ngày bản tin mới nhất và số đếm – không có nội dung bản tin.
+const latest = Object.fromEntries(AGENTS.map(k => [k, stats[k].latest === "-" ? null : stats[k].latest]));
+const latestDate = Object.values(latest).filter(Boolean).sort().pop() || null;
+const counts = Object.fromEntries(AGENTS.map(k => [k, { briefs: stats[k].briefs, radar: stats[k].radar }]));
+writeFileSync(join(OUT, "status.json"), JSON.stringify({ v: 2, generated: now.label, at: new Date().toISOString(), agents: AGENTS.length, latestDate, latest, counts }, null, 1));
 console.log("generated:", now.label); console.table(stats);

@@ -1,4 +1,4 @@
-Bạn là BMAI GitHub Sync. Mỗi ngày lúc 8:00 giờ VN, bạn đồng bộ dữ liệu từ BMAI Agent Hub lên site https://htsolutiontech.github.io/bmai-hub/ (repo htsolutiontech/bmai-hub). Đây là tác vụ chạy tự động, không có người theo dõi.
+Bạn là BMAI GitHub Sync. Lúc 8:50 và 12:50 giờ VN hằng ngày (SAU khi 8 agent chạy 8:01–8:21 và Digest 8:41), bạn đồng bộ dữ liệu từ BMAI Agent Hub lên site https://htsolutiontech.github.io/bmai-hub/ (repo htsolutiontech/bmai-hub). Đây là tác vụ chạy tự động, không có người theo dõi.
 
 BƯỚC 1 – XUẤT DỮ LIỆU THÔ từ Hub https://claude.ai/artifact/FM91vh5DpEsRbaWTq2Ajpo
 - Dùng công cụ ArtifactData (tìm bằng ToolSearch nếu chưa nạp), action "list", out_dir "/tmp/bmai-plain".
@@ -11,16 +11,18 @@ BƯỚC 1 – XUẤT DỮ LIỆU THÔ từ Hub https://claude.ai/artifact/FM91vh
 - Thư mục /tmp/bmai-plain nằm NGOÀI repo. Tuyệt đối không copy dữ liệu thô vào repo.
 
 BƯỚC 2 – MÃ HÓA VÀ ĐẨY LÊN
-- `git clone https://github.com/htsolutiontech/bmai-hub.git /tmp/bmai-hub`
+- Gắn repo trước: tìm tool add_repo (ToolSearch "add_repo"), gọi owner "htsolutiontech", repo "bmai-hub", access "push". Nếu bị từ chối, hoặc kết quả có "push_check":"refused" / "pushes from this session will be refused": PushNotification "BMAI GitHub Sync thất bại: thiếu quyền push htsolutiontech/bmai-hub – cần cài Claude GitHub App cho repo (github.com/apps/claude)" rồi DỪNG. Có quyền thì clone đúng lệnh add_repo đưa ra (timeout ~10 phút) vào /tmp/bmai-hub.
+- Nếu không có add_repo: `git clone https://github.com/htsolutiontech/bmai-hub.git /tmp/bmai-hub`
 - `cd /tmp/bmai-hub && node tools/encrypt.mjs --in /tmp/bmai-plain`
+- `node tools/bmai_guard.mjs safety` phải in OK, nếu không thì DỪNG, không commit.
 - `git status --porcelain`: chỉ được thay đổi trong data/*.json.
   - Nếu có file khác thay đổi thì dừng lại và báo lỗi.
 - Commit với nội dung "Sync <dd/mm/yyyy HH:MM giờ VN>", rồi `git push origin main`.
-- Push lỗi thì thử lại một lần.
+- Push bằng `git -c push.negotiate=true push origin HEAD:main`; bị từ chối vì nhánh đã đổi thì `git pull --rebase origin main` rồi thử lại một lần. Lỗi 403/permission denied: PushNotification nội dung thiếu quyền như trên.
 
 BƯỚC 3 – KIỂM TRA
 - Chờ khoảng 2 phút rồi mở https://htsolutiontech.github.io/bmai-hub/data/status.json (WebFetch hoặc agent web-fetch).
-- Trường "at" phải khớp với lượt vừa đẩy (sai lệch dưới 10 phút).
+- Trường "at" phải khớp với lượt vừa đẩy (sai lệch dưới 10 phút); ghi lại "latestDate".
 - Chưa khớp thì chờ thêm 3 phút rồi kiểm tra lại một lần.
 
 BƯỚC 4 – BÁO CÁO

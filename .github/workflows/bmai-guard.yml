@@ -1,0 +1,42 @@
+name: bmai-guard
+
+# Cảnh báo khi dữ liệu BMAI Hub ngừng cập nhật hoặc bị công khai chưa mã hóa.
+# Lượt chạy lỗi => GitHub gửi email "Run failed: bmai-guard" tới chủ repo
+# (Settings › Notifications › Actions: bật "Send notifications for failed workflows only").
+on:
+  schedule:
+    - cron: "23 3 * * 1-6"   # 10:23 giờ VN, T2–T7 (sau lượt Sync 08:50)
+    - cron: "23 6 * * 1-5"   # 13:23 giờ VN, T2–T6 (sau lượt Sync 12:50)
+  push:
+    branches: [main]
+    paths: ["data/**", "tools/**", ".github/workflows/bmai-guard.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+      - name: Kiểm tra đủ file công cụ
+        run: |
+          missing=0
+          for f in keys.json index.html tools/encrypt.mjs tools/bmai_guard.mjs; do
+            [ -f "$f" ] || { echo "::error::Thiếu $f – BMAI GitHub Sync sẽ không chạy được."; missing=1; }
+          done
+          exit $missing
+      - name: An toàn – dữ liệu công khai phải mã hóa
+        run: node tools/bmai_guard.mjs safety
+      - name: Độ tươi – phải có bản tin của ngày làm việc gần nhất
+        if: github.event_name != 'push'
+        run: node tools/bmai_guard.mjs freshness
+      - name: Tóm tắt
+        if: always()
+        run: |
+          { echo "### BMAI Hub – trạng thái dữ liệu"; echo '```json'; cat data/status.json 2>/dev/null || echo "(chưa có)"; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
