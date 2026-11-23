@@ -22,6 +22,16 @@ const readJSON = p => JSON.parse(readFileSync(p, "utf8"));
 const jsonFiles = d => existsSync(d) ? readdirSync(d).filter(f => f.endsWith(".json")).sort().map(f => join(d, f)) : [];
 const unwrapDoc = o => (o && o.data && typeof o.data === "object" && !Array.isArray(o.data)) ? o.data : o;
 const okUrl = u => /^https?:/i.test(u || "") && !/claude\.ai/i.test(u);
+// Bỏ mục/đoạn "Giả định" (không hiển thị trên site)
+const ASM = /^\s*[\[(]?\s*(giả định|giả thiết|các giả định|assumptions?)(?![\p{L}])/iu;
+const ASM_BLOCK = /<(p|li|tr|div|blockquote|h[3-6])\b[^>]*>\s*(?:<[^>]+>\s*)*(?:giả định|giả thiết|assumptions?)(?![\p{L}])[\s\S]*?<\/\1>/giu;
+const stripAsm = c => {
+  if (Array.isArray(c.sections)) c.sections = c.sections.filter(x => x && !ASM.test(String(x.title || "")))
+    .map(x => ({ ...x, html: String(x.html || "").replace(ASM_BLOCK, "") })).filter(x => x.html.replace(/<[^>]*>|\s/g, ""));
+  for (const f of ["highlights", "highlights_en"]) if (Array.isArray(c[f])) c[f] = c[f].filter(x => !ASM.test(String(x)));
+  for (const f of ["note", "note_en"]) if (ASM.test(String(c[f] || ""))) c[f] = "";
+  delete c.assumptions; return c;
+};
 
 async function seal(pubJwk, k, obj) {
   const pub = await subtle.importKey("jwk", pubJwk, EC, false, []);
@@ -48,7 +58,7 @@ mkdirSync(OUT, { recursive: true });
 const stats = {};
 for (const k of AGENTS) {
   const briefs = jsonFiles(join(IN, "briefs", k, "days")).map(f => unwrapDoc(readJSON(f))).filter(b => b && b.date)
-    .map(b => { const c = { ...b }; delete c.updatedAt; delete c.agent; c.sources = (c.sources || []).filter(s => okUrl(s.url)); return c; })
+    .map(b => { const c = { ...b }; delete c.updatedAt; delete c.agent; c.sources = (c.sources || []).filter(s => okUrl(s.url)); return stripAsm(c); })
     .sort((a, b) => b.date.localeCompare(a.date)).slice(0, KEEP_BRIEFS);
   const seen = new Set(), radar = [];
   for (const r of runs) for (const i of r.items || []) {
