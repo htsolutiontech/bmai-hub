@@ -158,7 +158,7 @@ function render(){
  if(isAdmin()){if(r==="overview")m.innerHTML=overview();else if(r==="radar")m.innerHTML=radarAll();else m.innerHTML=agentView(r.slice(6));return}
  m.innerHTML=agentView(myAgent())}
 async function onLogin(e){e.preventDefault();const r=$("#lr").value,pw=$("#lp").value;$("#le").textContent="…";
- try{DATA=await unlock(r,pw);role=r;asRole="";$("#lp").value="";location.hash="";render()}catch(x){$("#le").textContent=t("bad")}}
+ try{DATA=await unlock(r,pw);if(window.Insight)DATA=window.Insight.cleanDeep(DATA);role=r;asRole="";$("#lp").value="";location.hash="";render()}catch(x){$("#le").textContent=t("bad")}}
 $("#outBtn").onclick=()=>{role=null;DATA={};asRole="";render()};
 $("#asSel").onchange=e=>{asRole=e.target.value;render()};
 window.addEventListener("hashchange",render);
