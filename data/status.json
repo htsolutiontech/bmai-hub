@@ -1,38 +1,38 @@
 {
  "v": 2,
- "generated": "23/11/2026 07:54 (giờ VN)",
- "at": "2026-11-23T00:54:00.350Z",
+ "generated": "23/11/2026 12:51 (giờ VN)",
+ "at": "2026-11-23T05:51:28.422Z",
  "agents": 8,
- "latestDate": "2026-11-22",
+ "latestDate": "2026-11-23",
  "latest": {
-  "finance": "2026-11-17",
-  "ai": "2026-11-17",
-  "funds": "2026-11-22",
-  "ip": "2026-11-22",
-  "smb": "2026-11-22",
+  "finance": "2026-11-23",
+  "ai": "2026-11-23",
+  "funds": "2026-11-23",
+  "ip": "2026-11-23",
+  "smb": "2026-11-23",
   "edu": "2026-11-17",
   "hotel": "2026-11-17",
   "agri": "2026-11-17"
  },
  "counts": {
   "finance": {
-   "briefs": 3,
-   "radar": 3
+   "briefs": 4,
+   "radar": 4
   },
   "ai": {
-   "briefs": 3,
+   "briefs": 4,
    "radar": 4
   },
   "funds": {
-   "briefs": 4,
-   "radar": 0
-  },
-  "ip": {
    "briefs": 5,
    "radar": 0
   },
+  "ip": {
+   "briefs": 6,
+   "radar": 0
+  },
   "smb": {
-   "briefs": 4,
+   "briefs": 5,
    "radar": 0
   },
   "edu": {
