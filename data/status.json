@@ -1,7 +1,7 @@
 {
  "v": 2,
- "generated": "24/11/2026 12:51 (giờ VN)",
- "at": "2026-11-24T05:51:43.489Z",
+ "generated": "24/11/2026 16:56 (giờ VN)",
+ "at": "2026-11-24T09:56:40.007Z",
  "agents": 8,
  "latestDate": "2026-11-24",
  "latest": {
@@ -21,7 +21,7 @@
   },
   "ai": {
    "briefs": 5,
-   "radar": 4
+   "radar": 5
   },
   "funds": {
    "briefs": 6,
@@ -45,7 +45,7 @@
   },
   "agri": {
    "briefs": 4,
-   "radar": 2
+   "radar": 4
   }
  }
 }
