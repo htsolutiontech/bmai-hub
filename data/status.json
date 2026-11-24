@@ -1,7 +1,7 @@
 {
  "v": 2,
- "generated": "23/11/2026 12:51 (giờ VN)",
- "at": "2026-11-23T05:51:28.422Z",
+ "generated": "24/11/2026 07:54 (giờ VN)",
+ "at": "2026-11-24T00:54:14.088Z",
  "agents": 8,
  "latestDate": "2026-11-23",
  "latest": {
@@ -17,7 +17,7 @@
  "counts": {
   "finance": {
    "briefs": 4,
-   "radar": 4
+   "radar": 5
   },
   "ai": {
    "briefs": 4,
@@ -45,7 +45,7 @@
   },
   "agri": {
    "briefs": 3,
-   "radar": 0
+   "radar": 2
   }
  }
 }
