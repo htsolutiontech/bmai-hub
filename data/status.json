@@ -1,50 +1,50 @@
 {
  "v": 2,
- "generated": "24/11/2026 07:54 (giờ VN)",
- "at": "2026-11-24T00:54:14.088Z",
+ "generated": "24/11/2026 12:51 (giờ VN)",
+ "at": "2026-11-24T05:51:43.489Z",
  "agents": 8,
- "latestDate": "2026-11-23",
+ "latestDate": "2026-11-24",
  "latest": {
-  "finance": "2026-11-23",
-  "ai": "2026-11-23",
-  "funds": "2026-11-23",
-  "ip": "2026-11-23",
-  "smb": "2026-11-23",
-  "edu": "2026-11-17",
-  "hotel": "2026-11-17",
-  "agri": "2026-11-17"
+  "finance": "2026-11-24",
+  "ai": "2026-11-24",
+  "funds": "2026-11-24",
+  "ip": "2026-11-24",
+  "smb": "2026-11-24",
+  "edu": "2026-11-24",
+  "hotel": "2026-11-24",
+  "agri": "2026-11-24"
  },
  "counts": {
   "finance": {
-   "briefs": 4,
+   "briefs": 5,
    "radar": 5
   },
   "ai": {
-   "briefs": 4,
+   "briefs": 5,
    "radar": 4
   },
   "funds": {
-   "briefs": 5,
-   "radar": 0
-  },
-  "ip": {
    "briefs": 6,
    "radar": 0
   },
+  "ip": {
+   "briefs": 7,
+   "radar": 0
+  },
   "smb": {
-   "briefs": 5,
+   "briefs": 6,
    "radar": 0
   },
   "edu": {
-   "briefs": 3,
+   "briefs": 4,
    "radar": 0
   },
   "hotel": {
-   "briefs": 3,
+   "briefs": 4,
    "radar": 0
   },
   "agri": {
-   "briefs": 3,
+   "briefs": 4,
    "radar": 2
   }
  }
